@@ -252,6 +252,9 @@ layer is reachable by a client and not only by a terminal:
 { "mcpServers": { "forge": { "command": "forge", "args": ["mcp"] } } }
 ```
 
+Nineteen tools: ten that read, and [nine that write](#writes) so an agent can
+finish what it read rather than dictating it back to a human. Reads first.
+
 Ten read-only tools — the surface `forge mcp --read-only` serves in full:
 `forge_status`, `forge_semantic_diff`, `forge_show`, `forge_handler_for`,
 `forge_formats`, `forge_source_list`, `forge_conflicts`, and three that answer
@@ -291,15 +294,71 @@ is bounded, too — a client's cancellation and the server's own deadline both r
 the handler subprocess, so a runaway handler is killed with the call it was
 spawned for.
 
+### Writes
+
+Reading a semantic conflict and being unable to write the decision back leaves
+the one loop nothing else can run half-finished: a merge stops on a file whose
+format has a handler, `forge_conflicts` reports the conflicts inside it, an agent
+decides each one — and then has to describe the resolution to a human to type. So
+nine tools write, and **they are served by default**, matching the convention the
+git and GitHub MCP servers this was measured against already set:
+
+| tool | does |
+| --- | --- |
+| `forge_resolve_conflict` | write one file's semantic resolution, conflict by conflict |
+| `forge_add` | stage paths |
+| `forge_commit` | commit what is staged |
+| `forge_create_branch` | create a branch |
+| `forge_checkout` | check out a branch or revision |
+| `forge_reset` | unstage — the index only |
+| `forge_formats_add` | opt an extension in for this repository |
+| `forge_formats_ignore` | mark an extension deliberately unhandled |
+| `forge_install` | install a handler from a configured source |
+
+`forge_resolve_conflict` is the one the rest exist to complete. It is also the
+only tool here that overwrites a file, and it is annotated as destructive because
+of it.
+
+`forge mcp --read-only` collapses the surface to the tools annotated read-only —
+the ten above — and **the annotation is the whole filter**. There is no second
+list of which tools write, so a tool cannot be added in one place and forgotten
+in the other; the flag is read once, at startup, from a human's client config,
+and nothing a client sends can widen it. A read-only server does not list the
+write tools at all, and says so in its instructions, so what an agent can see is
+what it can call.
+
+Every annotation is set explicitly, including the two a caller might think it
+could leave out. `DestructiveHint` and `OpenWorldHint` are pointers in the SDK
+precisely because their spec default when *omitted* is `true` — an unset
+destructive hint tells a client the tool destroys things, and an unset open-world
+hint tells it the tool reaches the network. Neither is left to a default
+anywhere in this package. `forge_install` is the only tool with
+`openWorldHint: true`, because downloading a handler is the only thing here that
+touches the network.
+
+**What is absent is absent by construction, not gated.** Nothing pushes, pulls or
+fetches, so nothing leaves this machine except a handler download from a source a
+human already trusted. Nothing amends or rewrites history. Nothing forces
+anything. Nothing resets the working tree — `forge_reset` unstages and stops.
+`forge_checkout` does not force, so git's own refusal protects uncommitted work,
+and the agent is shown that refusal as git wrote it. An agent told what is
+missing stops probing for it, so the server's instructions say all of this up
+front rather than letting a model discover it one failed call at a time.
+
+The source list stays out of it in both modes. `forge_source_list` reads;
+nothing adds or removes. Adding a source is the consenting act everything
+downstream of it is mechanical from, and an agent that could perform it can be
+talked into it by the very repository content it is reviewing — which turns a
+human decision into a prompt-injection target. Issue #47 tracks whether there is
+a form of it that survives that argument.
+
 The repository is the one the command was started in, resolved once; every path
 an agent passes is resolved against that root and refused if it escapes — by its
 own name, and through any directory link on the way to it, because a repository
-under review is not allowed to steer a read out of itself. A link is compared as
-the path it names, which is what git recorded for it. The server never changes
-directory, never writes, and never touches the source list: adding a source is a
-human action at a terminal by design, because an agent that could perform that
-consenting act could be talked into it by the very repository content it is
-reviewing (issue #47).
+under review is not allowed to steer a read or a write out of itself. A link is
+compared as the path it names, which is what git recorded for it. The server
+never changes directory: the root is bound at startup, and every tool — reading
+or writing — is answered against that one root for the life of the session.
 
 ---
 

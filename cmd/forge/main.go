@@ -36,6 +36,10 @@ import (
 	"golang.org/x/term"
 )
 
+// version is the release version, injected at build time via
+// -ldflags "-X main.version=v0.1.0". Defaults to "dev" for local builds.
+var version = "dev"
+
 func main() {
 	if err := rootCmd().Execute(); err != nil {
 		os.Exit(1)
@@ -52,10 +56,12 @@ func defaultRegistry() *handler.Registry {
 
 func rootCmd() *cobra.Command {
 	root := &cobra.Command{
-		Use:   "forge",
-		Short: "Git, but for everything.",
-		Long:  "Forge is a format-aware version control system with semantic diff and merge for any file type.",
+		Use:     "forge",
+		Short:   "Git, but for everything.",
+		Long:    "Forge is a format-aware version control system with semantic diff and merge for any file type.",
+		Version: version,
 	}
+	root.SetVersionTemplate("forge {{.Version}}\n")
 	root.AddCommand(
 		initCmd(),
 		loginCmd(),

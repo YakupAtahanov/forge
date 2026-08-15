@@ -330,3 +330,6 @@ Cargo.lock
 
 # End of https://www.toptal.com/developers/gitignore/api/dotenv,node,rust,go,goland
 
+
+# release build artifacts
+dist/

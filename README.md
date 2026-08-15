@@ -29,6 +29,34 @@ forge log environment.hdr      → per-version thumbnails and metadata
 forge push / forge pull        → identical to git, fully compatible
 ```
 
+---
+
+## Install
+
+**One-liner (Linux / macOS / WSL / Git Bash)** — downloads a prebuilt binary from the latest release, no Go required:
+
+```
+curl -fsSL https://raw.githubusercontent.com/forgehubproject/forge/main/install.sh | bash
+```
+
+Pin a version with `FORGE_VERSION=v0.1.0`, or choose where it lands with `FORGE_INSTALL_DIR=~/.local/bin`.
+
+**Manual** — grab a binary for your platform from the [latest release](https://github.com/forgehubproject/forge/releases/latest) (`forge_<version>_<os>_<arch>`), verify it against `SHA256SUMS.txt`, then move it onto your `PATH`.
+
+**From source** (needs [Go 1.25+](https://go.dev/dl/)):
+
+```
+git clone https://github.com/forgehubproject/forge && cd forge
+go build -o forge ./cmd/forge
+```
+
+Check it works:
+
+```
+forge --version
+forge --help
+```
+
 Any git host (including ForgeHub) works out of the box. Forge repos are git repos.
 
 ---

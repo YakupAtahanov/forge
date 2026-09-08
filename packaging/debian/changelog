@@ -1,0 +1,8 @@
+forge (1.0.0-1) noble; urgency=medium
+
+  * Initial release.
+  * Git-based CLI with semantic diff and merge for 3D models, game assets,
+    and binary formats via the FHR plugin system.
+  * Includes MCP server (forge mcp) for AI tool integration.
+
+ -- Toufic Majdalani <toufic@touficmajdalani.com>  Mon, 08 Sep 2026 22:00:00 +0000

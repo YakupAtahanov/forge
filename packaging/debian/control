@@ -1,0 +1,20 @@
+Source: forge
+Section: devel
+Priority: optional
+Maintainer: Toufic Majdalani <toufic@touficmajdalani.com>
+Build-Depends: debhelper-compat (= 13), golang-go (>= 1.21) | golang-1.21
+Standards-Version: 4.6.2
+Homepage: https://github.com/forgehubproject/forge
+Vcs-Browser: https://github.com/forgehubproject/forge
+Vcs-Git: https://github.com/forgehubproject/forge.git
+Rules-Requires-Root: no
+
+Package: forge
+Architecture: amd64 arm64
+Depends: ${misc:Depends}
+Description: Git-based version control CLI for 3D models and game assets
+ Forge layers semantic diff and merge on top of git, enabling humans and
+ AI tools to clearly see changes in 3D models (glTF), game assets, and
+ other binary formats that git treats as opaque blobs.
+ .
+ Supports a plugin system (FHR) for adding handlers for any file format.

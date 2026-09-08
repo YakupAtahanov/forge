@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+export CGO_ENABLED=0
+export GOFLAGS=-trimpath
+export GOPATH=$(CURDIR)/.gopath
+
+PKG_VERSION=$(shell dpkg-parsechangelog -S Version | sed 's/-[^-]*$$//')
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	go build \
+		-ldflags "-s -w -X main.version=$(PKG_VERSION)" \
+		-o forge \
+		./cmd/forge
+
+override_dh_auto_install:
+	install -Dm755 forge $(CURDIR)/debian/forge/usr/bin/forge
+
+override_dh_auto_test:
+	go test ./...
+
+override_dh_auto_clean:
+	rm -f forge

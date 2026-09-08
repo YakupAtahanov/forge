@@ -1,5 +1,5 @@
 pkgbase = forge-bin
-	pkgdesc = Version control CLI with semantic diff and merge for 3D models, game assets, and any file type
+	pkgdesc = Git-based version control CLI with semantic diff and merge for 3D models, game assets, and binary formats
 	pkgver = 1.0.0
 	pkgrel = 1
 	url = https://github.com/forgehubproject/forge

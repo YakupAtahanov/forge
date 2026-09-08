@@ -5,7 +5,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/forgehubproject/forge/main/install.sh | bash
 #
 # Pin a version with FORGE_VERSION, or override the install dir with FORGE_INSTALL_DIR:
-#   FORGE_VERSION=v0.1.0 bash install.sh
+#   FORGE_VERSION=v1.0.0 bash install.sh
 set -euo pipefail
 
 REPO="forgehubproject/forge"

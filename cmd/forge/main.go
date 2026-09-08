@@ -37,7 +37,7 @@ import (
 )
 
 // version is the release version, injected at build time via
-// -ldflags "-X main.version=v0.1.0". Defaults to "dev" for local builds.
+// -ldflags "-X main.version=v1.0.0". Defaults to "dev" for local builds.
 var version = "dev"
 
 func main() {

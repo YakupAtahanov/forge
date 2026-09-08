@@ -1,0 +1,17 @@
+pkgbase = forge-bin
+	pkgdesc = Format-aware version control CLI with semantic diff and merge for any file type
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/forgehubproject/forge
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	provides = forge
+	conflicts = forge
+	options = !strip
+	source_x86_64 = forge-amd64::https://github.com/forgehubproject/forge/releases/download/v1.0.0/forge_v1.0.0_linux_amd64
+	sha256sums_x86_64 = 9d4af588e12b933df9f0460a0c18bf081510b90071c0f8ef6e938ecb19af8474
+	source_aarch64 = forge-arm64::https://github.com/forgehubproject/forge/releases/download/v1.0.0/forge_v1.0.0_linux_arm64
+	sha256sums_aarch64 = f6413a3f403496ec580f92af8c40a882bab933ef8308660b44ea805dc1735c17
+
+pkgname = forge-bin

@@ -1,3 +1,9 @@
+forge (1.0.0-2) noble; urgency=medium
+
+  * Set GOTOOLCHAIN=local to fix build in Launchpad sandbox (no network access).
+
+ -- Toufic Majdalani <toufic@touficmajdalani.com>  Tue, 08 Sep 2026 23:55:00 +0000
+
 forge (1.0.0-1) noble; urgency=medium
 
   * Initial release.
